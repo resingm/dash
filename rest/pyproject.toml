@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "dash-rest"
+version = "0.1.0"
+description = "REST service for the dash application stack"
+authors = ["Max Resing <max.resing@protonmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+sanic = "^21.6.2"
+py-redis = "^1.1.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.8b0"
+isort = "^5.9.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
