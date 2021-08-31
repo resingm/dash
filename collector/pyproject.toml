@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "dash-collector"
+version = "0.1.0"
+description = "Data collector for the dash application stack."
+authors = ["Max Resing <max.resing@protonmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.26.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.8b0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
