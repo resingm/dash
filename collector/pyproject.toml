@@ -7,6 +7,8 @@ authors = ["Max Resing <max.resing@protonmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 requests = "^2.26.0"
+APScheduler = "^3.7.0"
+py-redis = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 black = "^21.8b0"
