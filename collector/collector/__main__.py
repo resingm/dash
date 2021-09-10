@@ -1,4 +1,12 @@
+import json
+from datetime import timezone
+
 from collector.api.http import HttpApi
+from collector import state, utils
+
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+from pyredis import RedisConnection
 
 
 def main():
@@ -10,10 +18,56 @@ def main():
         lon="6.89527",
         units="metric",
         exclude="hourly,daily",
+        post_proc=utils.post_proc_weather,
     )
 
-    test = weather.get()
-    print(test)
+    cfg = {}
+    with open("./config.json", "r") as f:
+        cfg = json.load(f)
+
+    rc = RedisConnection(**cfg["redis"])
+
+    state_mgr = state.StateManager()
+    scheduler = BlockingScheduler(
+        {
+            "apscheduler.executors.default": {
+                "class": "apscheduler.executors.pool:ThreadPoolExecutor",
+                "max_workers": "5",
+            },
+            "apscheduler.timezone": "UTC",
+        }
+    )
+
+    args = (
+        state_mgr,
+        "card",
+        "1",
+        "Weather Enschede",
+        weather.get,
+    )
+    scheduler.add_job(
+        state.update,
+        args=args,
+        # trigger=IntervalTrigger(seconds=60 * 5),
+        trigger=IntervalTrigger(seconds=10),
+        id="openweathermap-enschede",
+        replace_existing=True,
+    )
+
+    args = (state_mgr, rc, "dash")
+    scheduler.add_job(
+        state.upload,
+        args=args,
+        trigger=IntervalTrigger(seconds=3),
+        id="redis-upload",
+        replace_existing=True,
+    )
+
+    try:
+        scheduler.start()
+    except Exception as e:
+        # TODO: use logging
+        print(e)
 
 
 if __name__ == "__main__":
