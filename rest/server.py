@@ -1,16 +1,17 @@
-import asyncio
 import json
 
 from pyredis import RedisConnection
 from sanic import Sanic
 from sanic.log import logger
-from sanic import response
+from sanic.response import HTTPResponse
+
+import response
 
 app = Sanic("Dash")
 
 
 @app.get("/")
-async def index(req):
+async def index(req) -> HTTPResponse:
     logger.info("Requesting /")
 
     data = None
@@ -22,8 +23,9 @@ async def index(req):
     except Exception as e:
         # logger.error(f"Query data failed: {str(e)}")
         logger.debug("Details: ", exc_info=e)
+        response._500(e=e)
 
-    return response.json(data) if data else {}
+    return response._json(data)
 
 
 def main(app: Sanic):
