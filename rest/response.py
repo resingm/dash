@@ -1,6 +1,6 @@
 import traceback
 
-from sanic.response import empty, json, HTTPResponse
+from sanic.response import empty, json
 
 
 def _wrap(tag: str, payload: dict):
