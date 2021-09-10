@@ -8,6 +8,7 @@ class HttpApi:
         response_type: str = "json",
         username: str = None,
         password: str = None,
+        post_proc: callable = None,
         **kwargs,
     ):
         self._base_url = base_url
@@ -18,6 +19,7 @@ class HttpApi:
         assert response_type in ["json", "raw", "text"]
 
         self._type = response_type
+        self._post_proc = post_proc
 
     def get(self):
         r = None
@@ -37,9 +39,16 @@ class HttpApi:
         if r is None:
             return None
 
+        val = ""
+
         if self._type == "json":
-            return r.json()
+            val = r.json()
         elif self._type == "raw":
-            return r.raw.read()
+            val = r.raw.read()
         elif self._type == "text":
-            return r.text
+            val = r.text
+
+        if self._post_proc is not None:
+            val = self._post_proc(val)
+
+        return val
