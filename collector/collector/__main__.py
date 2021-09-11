@@ -38,6 +38,7 @@ def main():
         }
     )
 
+    # Weather Enschede - type: card
     args = (
         state_mgr,
         "card",
@@ -51,6 +52,23 @@ def main():
         # trigger=IntervalTrigger(seconds=60 * 5),
         trigger=IntervalTrigger(seconds=10),
         id="openweathermap-enschede",
+        replace_existing=True,
+    )
+    #
+    # Weather Enschede - type: weather
+    args = (
+        state_mgr,
+        "weather",
+        "2",
+        "Weather Enschede",
+        weather.get,
+    )
+    scheduler.add_job(
+        state.update,
+        args=args,
+        # trigger=IntervalTrigger(seconds=60 * 5),
+        trigger=IntervalTrigger(seconds=10),
+        id="openweathermap-enschede-2",
         replace_existing=True,
     )
 
