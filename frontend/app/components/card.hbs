@@ -1,0 +1,29 @@
+<div class="card m-2">
+  <div class="card-body">
+    {{#if @title}}
+      <h5 class="card-title">{{@title}}</h5>
+    {{/if}}
+    {{#if @subtitle}}
+      <h6 class="card-subtitle mb-2 text-muted">{{@subtitle}}</h6>
+    {{/if}}
+
+    {{#if @attributes}}
+      <table class="card-body">
+        <tbody>
+          {{! TODO: FIX ATTRIBUTES ITERATION }}
+          {{#each-in @attributes as |label value|}}
+            <tr>
+              <td class="m-1">{{label}}</td>
+              <th class="float-end">{{value}}</th>
+            </tr>
+          {{/each-in}}
+        </tbody>
+      </table>
+    {{/if}}
+  </div>
+
+  <div class="card-footer">
+    <small class="text-muted">{{@type}} {{@id}}</small>
+  </div>
+</div>
+

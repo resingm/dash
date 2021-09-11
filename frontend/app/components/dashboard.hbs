@@ -1,0 +1,13 @@
+<div class="row">
+  {{#each this.items as |item|}}
+    <div class="col-lg-4 col-md-6 col-12">
+      <Card
+        @type={{item.type}}
+        @id={{item.id}}
+        @title={{item.meta.title}}
+        @subtitle={{item.meta.subtitle}}
+        @attributes={{item.attributes}}
+      ></Card>
+    </div>
+  {{/each}}
+</div>
