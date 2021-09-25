@@ -1,40 +1,45 @@
-import Component from '@ember/component';
-import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 import { A } from '@ember/array';
+import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class DashboardComponent extends Component {
-  @tracked items = A([])
+  @service('state') state;
+  @tracked items = A([]);
 
-  init() {
-    super.init(...arguments);
+  interval = 2000;
+  refresher = null;
 
-    this.empty();
+  constructor(owner, args) {
+    super(owner, args);
 
-    //const res = fetch("http://localhost/api");
-    //
-    fetch("http://localhost/api").then((res) => {
-      if (!res.ok) {
-        console.log("Error");
-      }
-      return res.json();
-    }).then((res) => {
-      res.data.forEach(x => this.add(x));
-    });
+    // this.refresh();
+    this.start();
   }
 
-  add(item) {
-    this.items.pushObject(item);
+  willDestroy() {
+    this.shutdown();
   }
 
-  remove(item) {
-    this.items.removeObject(item);
+  async start() {
+    //this.refresher = setInterval(await this.refresh(), this.interval);
+    this.refresher = setInterval(async () => {
+      await this.refresh();
+    }, this.interval);
   }
 
-  empty() {
-    this.items.clear();
+  async shutdown() {
+    if(!this.refresher) {
+      // If interval is not set, leave
+      return;
+    }
+
+    clearInterval(this.refresher);
+  }
+
+  async refresh() {
+    await this.state.refresh();
+    this.items = this.state.get();
   }
 }
-
-import Route from '@ember/routing/route';
 
