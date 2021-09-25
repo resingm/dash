@@ -2,6 +2,7 @@ def wrap_component(
     id: str,
     title: str,
     subtitle: str = None,
+    ts: int = None,
     card_type: str = "card",
     attributes: dict = {},
 ) -> dict:
@@ -13,6 +14,8 @@ def wrap_component(
     :type title: str
     :param subtitle: Subtitle of the card, defaults to None
     :type subtitle: str, optional
+    :param ts: Timestamp of the moment this data was updated
+    :type ts: int, optional
     :param card_type: Type of the card, defaults to "card"
     :type card_type: str, optional
     :param attributes: Set of attributes, defaults to {}
@@ -25,6 +28,9 @@ def wrap_component(
 
     if subtitle:
         meta["subtitle"] = subtitle
+
+    if ts:
+        meta["ts"] = ts
 
     return {
         "type": card_type,
@@ -43,12 +49,14 @@ def post_proc_weather(data: dict) -> dict:
     :rtype: dict
     """
     params = {
-        "lat": "latitude",
-        "lon": "longitude",
-        "current.temp": "temperature",
-        "current.feels_like": "temperate_feeling",
-        "current.clouds": "clouds",
-        "current.wind_speed": "wind",
+        "main.temp": "temp",
+        "main.feels_like": "feels_like",
+        "main.temp_min": "temp_min",
+        "main.temp_max": "temp_max",
+        "main.pressure": "pressure",
+        "main.humidity": "humidity",
+        "clouds.all": "clouds",
+        "wind.speed": "wind",
     }
 
     result = {}
@@ -62,5 +70,17 @@ def post_proc_weather(data: dict) -> dict:
 
         if v is not None:
             result[val] = v
+
+    weather = data["weather"]
+    if len(weather):
+        weather = weather[0]
+        icon = weather.get('icon')
+        if icon:
+            result["icon"] = f"https://openweathermap.org/img/wn/{icon}@4x.png"
+
+        result.update({
+            "main": weather.get('main', "unknown"),
+            "description": weather.get("description", "unknown"),
+        })
 
     return result

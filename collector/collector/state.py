@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from typing import Union
 from utils import wrap_component
 
@@ -31,10 +32,13 @@ def update(
     **kwargs,
 ):
     val = f(*args, **kwargs)
+    ts = datetime.utcnow().isoformat(timespec="seconds")
+    ts = f"{ts} GMT"
     comp = wrap_component(
         id=id,
         title=title,
         subtitle=subtitle,
+        ts=ts,
         card_type=card_type,
         attributes=val,
     )
