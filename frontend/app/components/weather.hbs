@@ -1,0 +1,51 @@
+<Master @type={{@type}} @id={{@id}} @title={{@title}} @subtitle={{@subtitle}} @ts={{@ts}}>
+<div class="d-flex flex-row justify-content-around">
+  <div class="d-flex flex-column align-self-center">
+      <p class="fs-1 text-center">{{@attributes.temp}}°C</p>
+      <small class="text-muted text-center">~{{@attributes.feels_like}}°C</small>
+      <p class="fs-3 text-center">{{@attributes.main}}</p>
+    </div>
+    <div class="d-flex flex-column align-self-center">
+      <img src={{@attributes.icon}}/>
+      <small class="text-muted text-center">{{@attributes.description}}</small>
+    </div>
+  </div>
+  <div class="d-flex flex-row justify-content-around">
+    <table class="card-body">
+      <tbody>
+        <tr>
+          <td class="m-1">Min. Temperature</td>
+          <th class="float-end">{{@attributes.temp_min}}</th>
+          <th>°C</th>
+        </tr>
+        <tr>
+          <td class="m-1">Max. Temperature</td>
+          <th class="float-end">{{@attributes.temp_max}}</th>
+          <th>°C</th>
+        </tr>
+        <tr>
+          <td class="m-1">Humidity</td>
+          <th class="float-end">{{@attributes.humidity}}</th>
+          <th>%</th>
+        </tr>
+        <tr>
+          <td class="m-1">Clouds</td>
+          <th class="float-end">{{@attributes.clouds}}</th>
+          <th>%</th>
+        </tr>
+        <tr>
+          <td class="m-1">Wind</td>
+          <th class="float-end">{{@attributes.wind}}</th>
+          <th>m/sec</th>
+        </tr>
+        <tr>
+          <td class="m-1">Pressure</td>
+          <th class="float-end">{{@attributes.pressure}}</th>
+          <th>Pa</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</Master>
+
+{{yield}}

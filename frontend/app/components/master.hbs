@@ -1,0 +1,26 @@
+<div class="card m-2">
+  <div class="card-body">
+    {{#if @title}}
+      <h5 class="card-title">{{@title}}</h5>
+    {{/if}}
+    {{#if @subtitle}}
+      <h6 class="card-subtitle mb-2 text-muted">{{@subtitle}}</h6>
+    {{/if}}
+
+    {{yield}}
+  </div>
+
+  <div class="card-footer">
+    {{#if @ts}}
+      <div class="d-flex justify-content-between">
+        <small class="text-muted pull-left">{{@ts}}</small>
+        <small class="text-muted pull-right">{{@type}} {{@id}}</small>
+      </div>
+    {{else}}
+      <div class="d-flex justify-content-end">
+        <small class="text-muted pull-right">{{@type}} {{@id}}</small>
+      </div>
+    {{/if}}
+  </div>
+</div>
+

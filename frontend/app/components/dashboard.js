@@ -18,6 +18,7 @@ export default class DashboardComponent extends Component {
   }
 
   willDestroy() {
+    super.willDestroy(...arguments);
     this.shutdown();
   }
 
@@ -29,7 +30,7 @@ export default class DashboardComponent extends Component {
   }
 
   async shutdown() {
-    if(!this.refresher) {
+    if (!this.refresher) {
       // If interval is not set, leave
       return;
     }
@@ -42,4 +43,3 @@ export default class DashboardComponent extends Component {
     this.items = this.state.get();
   }
 }
-
